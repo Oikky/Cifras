@@ -2,72 +2,161 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Cifras — Ministração</title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Segoe UI', Arial, sans-serif; background: #111827; color: #fff; }
 
-/* NAV */
-nav {
+:root { --nav-h: 64px; }
+
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #111827; color: #fff;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+
+/* ── BOTTOM NAV (mobile) ── */
+.bottom-nav {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+  background: #0d1117;
+  border-top: 1px solid #1f2937;
+  display: flex;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+.nav-btn {
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  border: none; background: transparent; color: #4b5563;
+  font-family: inherit; font-size: 0.6rem; font-weight: 700;
+  padding: 10px 4px 8px; cursor: pointer; gap: 4px;
+  text-transform: uppercase; letter-spacing: 0.04em;
+  border-top: 2.5px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+  line-height: 1.2;
+}
+.nav-btn .dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: currentColor; opacity: 0.4;
+  transition: opacity 0.15s, transform 0.15s;
+}
+.nav-btn.active { color: var(--c); border-top-color: var(--c); }
+.nav-btn.active .dot { opacity: 1; transform: scale(1.3); }
+.nav-btn span { max-width: 56px; text-align: center; line-height: 1.2; }
+
+/* ── TOP HEADER ── */
+.top-bar {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   background: #0d1117; border-bottom: 1px solid #1f2937;
-  display: flex; align-items: center; gap: 0; overflow-x: auto;
-  scrollbar-width: none;
+  padding: 14px 16px 12px;
+  display: flex; align-items: flex-end; gap: 10px;
 }
-nav::-webkit-scrollbar { display: none; }
-nav button {
-  flex-shrink: 0; border: none; background: transparent;
-  color: #9ca3af; font-size: 0.8rem; font-weight: 600;
-  padding: 0.75rem 1.1rem; cursor: pointer; white-space: nowrap;
-  border-bottom: 3px solid transparent; transition: all 0.15s;
-  font-family: inherit;
-}
-nav button:hover { color: #fff; background: #1f2937; }
-nav button.active { color: #fff; border-bottom-color: var(--c); }
+.top-bar-accent { width: 4px; height: 32px; border-radius: 2px; flex-shrink: 0; transition: background 0.2s; }
+.top-bar-info { flex: 1; min-width: 0; }
+.top-bar-title { font-size: 1.1rem; font-weight: 800; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.top-bar-artist { font-size: 0.72rem; color: #6b7280; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.top-bar-count { font-size: 0.68rem; font-weight: 700; padding: 3px 9px; border-radius: 20px; flex-shrink: 0; }
 
-/* PAGES */
-.pages { padding-top: 44px; }
-.page { display: none; padding: 1.5rem 1.25rem 2.5rem; max-width: 1100px; margin: 0 auto; }
+/* ── PAGES ── */
+.pages {
+  padding-top: 66px;
+  padding-bottom: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px) + 12px);
+}
+.page { display: none; padding: 12px 12px 8px; }
 .page.active { display: block; }
 
-.page-header { margin-bottom: 1.25rem; }
-.page-title { font-size: 1.8rem; font-weight: 800; line-height: 1.1; }
-.page-artist { font-size: 0.95rem; color: #9ca3af; margin-top: 4px; }
-.page-accent { display: inline-block; width: 40px; height: 4px; border-radius: 2px; margin-bottom: 10px; }
-
-/* GRID of sections */
-.sections-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 0.85rem;
-}
+/* ── SECTION CARDS ── */
 .sec-card {
-  background: #1f2937; border-radius: 10px;
+  background: #1f2937;
+  border-radius: 12px;
   border-left: 4px solid var(--c);
-  padding: 0.85rem 1rem;
+  padding: 14px 14px 14px 14px;
+  margin-bottom: 10px;
 }
-.sec-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: #6b7280; margin-bottom: 3px; }
-.sec-phrase { font-size: 0.82rem; color: #9ca3af; font-style: italic; margin-bottom: 10px; }
-.chord-row { display: flex; flex-wrap: wrap; gap: 5px; }
+.sec-card:last-child { margin-bottom: 0; }
+
+.sec-label {
+  font-size: 0.65rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: #6b7280; margin-bottom: 3px;
+}
+.sec-phrase {
+  font-size: 0.85rem; color: #9ca3af;
+  font-style: italic; margin-bottom: 12px;
+  line-height: 1.4;
+}
+
+.chord-row { display: flex; flex-wrap: wrap; gap: 7px; }
 .chord {
-  font-family: 'Courier New', monospace; font-size: 1rem; font-weight: 700;
-  padding: 4px 11px; border-radius: 6px;
-  background: rgba(255,255,255,0.07);
+  font-family: 'Courier New', monospace;
+  font-size: 1.1rem; font-weight: 800;
+  padding: 7px 14px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
   border: 1.5px solid var(--c);
   color: var(--c);
+  min-width: 44px; text-align: center;
+  /* large touch target */
+  min-height: 40px; display: flex; align-items: center; justify-content: center;
+}
+
+/* ── DESKTOP overrides ── */
+@media (min-width: 640px) {
+  :root { --nav-h: 44px; }
+  .bottom-nav {
+    top: 0; bottom: auto;
+    border-top: none; border-bottom: 1px solid #1f2937;
+    overflow-x: auto; scrollbar-width: none;
+  }
+  .bottom-nav::-webkit-scrollbar { display: none; }
+  .nav-btn {
+    flex-direction: row; gap: 6px;
+    font-size: 0.8rem; padding: 0 1.1rem;
+    height: 44px; border-top: none;
+    border-bottom: 3px solid transparent; white-space: nowrap;
+    flex: 0 0 auto;
+  }
+  .nav-btn .dot { display: none; }
+  .nav-btn.active { border-bottom-color: var(--c); border-top-color: transparent; }
+
+  .top-bar { top: 44px; }
+  .pages {
+    padding-top: 112px;
+    padding-bottom: 2rem;
+    max-width: 960px; margin: 0 auto;
+  }
+  .page { padding: 20px 20px 8px; }
+
+  .sections-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .sec-card { margin-bottom: 0; }
+
+  .chord { font-size: 1rem; padding: 5px 12px; min-height: auto; }
+  .top-bar-title { font-size: 1.3rem; }
 }
 </style>
 </head>
 <body>
 
-<nav id="nav"></nav>
+<div class="bottom-nav" id="nav"></div>
+
+<div class="top-bar" id="topBar">
+  <div class="top-bar-accent" id="topAccent"></div>
+  <div class="top-bar-info">
+    <div class="top-bar-title" id="topTitle"></div>
+    <div class="top-bar-artist" id="topArtist"></div>
+  </div>
+  <span class="top-bar-count" id="topCount"></span>
+</div>
+
 <div class="pages" id="pages"></div>
 
 <script>
 const songs = [
   {
-    title: "Gratidão", artist: "Felipe Rodrigues", sub: "Ministração ao vivo", color: "#7C6EF5",
+    title: "Gratidão", artist: "Felipe Rodrigues", sub: "Ministração ao vivo", color: "#7C6EF5", cbg: "#1a1740",
     sections: [
       { label: "Trecho 1 — Intro", phrase: "Instrumental, sem letra", chords: ["B","G#","F#","E"] },
       { label: "Trecho 2 — Primeira parte", phrase: '"Nada novo achei"', chords: ["B","G#","F#","E"] },
@@ -78,7 +167,7 @@ const songs = [
     ]
   },
   {
-    title: "Santo Espírito", artist: "Leo Rezende", sub: "Ministração ao vivo", color: "#2DB87B",
+    title: "Santo Espírito", artist: "Leo Rezende", sub: "Ministração ao vivo", color: "#2DB87B", cbg: "#0a2018",
     sections: [
       { label: "Trecho 1 — Intro", phrase: "Instrumental, sem letra", chords: ["A","D"] },
       { label: "Trecho 2 — Primeira parte (verso 1)", phrase: '"Não há nada igual"', chords: ["A","D"] },
@@ -89,7 +178,7 @@ const songs = [
     ]
   },
   {
-    title: "Tudo é Perda", artist: "Felipe Rodrigues", sub: "Ao vivo", color: "#E96058",
+    title: "Tudo é Perda", artist: "Felipe Rodrigues", sub: "Ao vivo", color: "#E96058", cbg: "#2a0f0d",
     sections: [
       { label: "Trecho 1 — Intro", phrase: "Instrumental, sem letra", chords: ["A#","Gm","F","D#"] },
       { label: "Trecho 2 — Primeira parte", phrase: '"Tudo é perda se não tenho a Ti"', chords: ["A#","Gm","F","D#"] },
@@ -100,7 +189,7 @@ const songs = [
     ]
   },
   {
-    title: "Oceanos / Rendido Estou", artist: "Sara Vivian", sub: "Ministração ao vivo", color: "#F0A500",
+    title: "Oceanos / Rendido Estou", artist: "Sara Vivian", sub: "Ministração ao vivo", color: "#F0A500", cbg: "#251a00",
     sections: [
       { label: "Trecho 1 — Intro", phrase: "Instrumental, sem letra", chords: ["Am"] },
       { label: "Trecho 2 — Primeira parte (verso)", phrase: '"Guia-me pra que em tudo em Ti confie"', chords: ["Am","F","C","G"] },
@@ -113,7 +202,7 @@ const songs = [
     ]
   },
   {
-    title: "Meu Alvo", artist: "Kleber Lucas", sub: "", color: "#3A8FDD",
+    title: "Meu Alvo", artist: "Kleber Lucas", sub: "", color: "#3A8FDD", cbg: "#081828",
     sections: [
       { label: "Trecho 1 — Intro", phrase: "Instrumental, sem letra", chords: ["Bb","Eb","Gm","Eb"] },
       { label: "Trecho 2 — Primeira parte (verso 1)", phrase: '"Estou subindo pra um lugar mais alto"', chords: ["Bb","Gm","Bb","Gm","Eb","Ebm","Bb","F","F4","F","Gm","F","Eb"] },
@@ -125,16 +214,33 @@ const songs = [
   }
 ];
 
-const nav = document.getElementById('nav');
+const nav   = document.getElementById('nav');
 const pages = document.getElementById('pages');
+const topAccent = document.getElementById('topAccent');
+const topTitle  = document.getElementById('topTitle');
+const topArtist = document.getElementById('topArtist');
+const topCount  = document.getElementById('topCount');
+
+let current = 0;
+
+function shortTitle(t) {
+  const map = {
+    "Gratidão": "Gratidão",
+    "Santo Espírito": "Sto. Espírito",
+    "Tudo é Perda": "Tudo é Perda",
+    "Oceanos / Rendido Estou": "Oceanos",
+    "Meu Alvo": "Meu Alvo"
+  };
+  return map[t] || t;
+}
 
 songs.forEach((song, i) => {
   // nav button
   const btn = document.createElement('button');
-  btn.textContent = song.title;
+  btn.className = 'nav-btn' + (i === 0 ? ' active' : '');
   btn.style.setProperty('--c', song.color);
+  btn.innerHTML = `<div class="dot"></div><span>${shortTitle(song.title)}</span>`;
   btn.onclick = () => switchTo(i);
-  if (i === 0) btn.classList.add('active');
   nav.appendChild(btn);
 
   // page
@@ -142,7 +248,7 @@ songs.forEach((song, i) => {
   page.className = 'page' + (i === 0 ? ' active' : '');
   page.style.setProperty('--c', song.color);
 
-  const sectionsHtml = song.sections.map(sec => `
+  const cardsHtml = song.sections.map(sec => `
     <div class="sec-card">
       <div class="sec-label">${sec.label}</div>
       <div class="sec-phrase">${sec.phrase}</div>
@@ -150,21 +256,42 @@ songs.forEach((song, i) => {
     </div>
   `).join('');
 
-  page.innerHTML = `
-    <div class="page-header">
-      <div class="page-accent" style="background:${song.color}"></div>
-      <div class="page-title">${song.title}</div>
-      <div class="page-artist">${song.artist}${song.sub ? ' · ' + song.sub : ''}</div>
-    </div>
-    <div class="sections-grid">${sectionsHtml}</div>
-  `;
+  // desktop wraps in grid, mobile is just stacked
+  page.innerHTML = `<div class="sections-grid">${cardsHtml}</div>`;
   pages.appendChild(page);
 });
 
-function switchTo(idx) {
-  document.querySelectorAll('nav button').forEach((b, i) => b.classList.toggle('active', i === idx));
-  document.querySelectorAll('.page').forEach((p, i) => p.classList.toggle('active', i === idx));
+function updateTopBar(idx) {
+  const s = songs[idx];
+  topAccent.style.background = s.color;
+  topTitle.textContent = s.title;
+  topArtist.textContent = s.artist + (s.sub ? ' · ' + s.sub : '');
+  topCount.textContent = s.sections.length + ' trechos';
+  topCount.style.background = s.cbg;
+  topCount.style.color = s.color;
 }
+
+function switchTo(idx) {
+  current = idx;
+  document.querySelectorAll('.nav-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+  document.querySelectorAll('.page').forEach((p, i) => p.classList.toggle('active', i === idx));
+  updateTopBar(idx);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// swipe support
+let tsX = 0, tsY = 0;
+document.addEventListener('touchstart', e => { tsX = e.touches[0].clientX; tsY = e.touches[0].clientY; }, { passive: true });
+document.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - tsX;
+  const dy = e.changedTouches[0].clientY - tsY;
+  if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+    if (dx < 0 && current < songs.length - 1) switchTo(current + 1);
+    if (dx > 0 && current > 0) switchTo(current - 1);
+  }
+}, { passive: true });
+
+updateTopBar(0);
 </script>
 </body>
 </html>
