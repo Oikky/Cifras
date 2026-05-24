@@ -6,134 +6,116 @@
 <title>Cifras — Ministração</title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 :root { --nav-h: 64px; }
+body { font-family: 'Segoe UI', Arial, sans-serif; background: #111827; color: #fff; -webkit-tap-highlight-color: transparent; overscroll-behavior: none; }
 
-body {
-  font-family: 'Segoe UI', Arial, sans-serif;
-  background: #111827; color: #fff;
-  -webkit-tap-highlight-color: transparent;
-  overscroll-behavior: none;
-}
-
-/* ── BOTTOM NAV (mobile) ── */
+/* ── BOTTOM NAV (mobile default) ── */
 .bottom-nav {
   position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
-  background: #0d1117;
-  border-top: 1px solid #1f2937;
+  background: #0d1117; border-top: 1px solid #1f2937;
   display: flex;
   padding-bottom: env(safe-area-inset-bottom, 0);
 }
 .nav-btn {
   flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
   border: none; background: transparent; color: #4b5563;
-  font-family: inherit; font-size: 0.6rem; font-weight: 700;
-  padding: 10px 4px 8px; cursor: pointer; gap: 4px;
-  text-transform: uppercase; letter-spacing: 0.04em;
+  font-family: inherit; font-weight: 700;
+  padding: 10px 2px 8px; cursor: pointer; gap: 5px;
   border-top: 2.5px solid transparent;
   transition: color 0.15s, border-color 0.15s;
-  line-height: 1.2;
 }
 .nav-btn .dot {
   width: 8px; height: 8px; border-radius: 50%;
   background: currentColor; opacity: 0.4;
-  transition: opacity 0.15s, transform 0.15s;
+  transition: opacity 0.15s, transform 0.15s; flex-shrink: 0;
 }
 .nav-btn.active { color: var(--c); border-top-color: var(--c); }
 .nav-btn.active .dot { opacity: 1; transform: scale(1.3); }
-.nav-btn span { max-width: 56px; text-align: center; line-height: 1.2; }
+
+/* label: mobile shows data-short via CSS, hides the real text */
+.nav-btn span {
+  display: block; font-size: 0;
+  text-align: center; line-height: 1.2;
+}
+.nav-btn span::before {
+  content: attr(data-short);
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
 
 /* ── TOP HEADER ── */
 .top-bar {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   background: #0d1117; border-bottom: 1px solid #1f2937;
   padding: 14px 16px 12px;
-  display: flex; align-items: flex-end; gap: 10px;
+  display: flex; align-items: center; gap: 10px;
 }
 .top-bar-accent { width: 4px; height: 32px; border-radius: 2px; flex-shrink: 0; transition: background 0.2s; }
 .top-bar-info { flex: 1; min-width: 0; }
-.top-bar-title { font-size: 1.1rem; font-weight: 800; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.top-bar-artist { font-size: 0.72rem; color: #6b7280; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.top-bar-count { font-size: 0.68rem; font-weight: 700; padding: 3px 9px; border-radius: 20px; flex-shrink: 0; }
+.top-bar-title { font-size: 1.05rem; font-weight: 800; line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.top-bar-artist { font-size: 0.7rem; color: #6b7280; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.top-bar-count { font-size: 0.68rem; font-weight: 700; padding: 3px 9px; border-radius: 20px; flex-shrink: 0; white-space: nowrap; }
 
 /* ── PAGES ── */
 .pages {
   padding-top: 66px;
-  padding-bottom: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px) + 12px);
+  padding-bottom: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px) + 16px);
 }
 .page { display: none; padding: 12px 12px 8px; }
 .page.active { display: block; }
 
 /* ── SECTION CARDS ── */
 .sec-card {
-  background: #1f2937;
-  border-radius: 12px;
+  background: #1f2937; border-radius: 12px;
   border-left: 4px solid var(--c);
-  padding: 14px 14px 14px 14px;
-  margin-bottom: 10px;
+  padding: 14px; margin-bottom: 10px;
 }
 .sec-card:last-child { margin-bottom: 0; }
-
-.sec-label {
-  font-size: 0.65rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.1em;
-  color: #6b7280; margin-bottom: 3px;
-}
-.sec-phrase {
-  font-size: 0.85rem; color: #9ca3af;
-  font-style: italic; margin-bottom: 12px;
-  line-height: 1.4;
-}
-
+.sec-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #6b7280; margin-bottom: 3px; }
+.sec-phrase { font-size: 0.85rem; color: #9ca3af; font-style: italic; margin-bottom: 12px; line-height: 1.4; }
 .chord-row { display: flex; flex-wrap: wrap; gap: 7px; }
 .chord {
-  font-family: 'Courier New', monospace;
-  font-size: 1.1rem; font-weight: 800;
-  padding: 7px 14px;
-  border-radius: 8px;
+  font-family: 'Courier New', monospace; font-size: 1.1rem; font-weight: 800;
+  padding: 7px 14px; border-radius: 8px;
   background: rgba(255,255,255,0.05);
-  border: 1.5px solid var(--c);
-  color: var(--c);
-  min-width: 44px; text-align: center;
-  /* large touch target */
-  min-height: 40px; display: flex; align-items: center; justify-content: center;
+  border: 1.5px solid var(--c); color: var(--c);
+  min-width: 44px; min-height: 40px;
+  display: flex; align-items: center; justify-content: center;
 }
 
-/* ── DESKTOP overrides ── */
+/* ── DESKTOP ── */
 @media (min-width: 640px) {
   :root { --nav-h: 44px; }
+
   .bottom-nav {
     top: 0; bottom: auto;
     border-top: none; border-bottom: 1px solid #1f2937;
-    overflow-x: auto; scrollbar-width: none;
+    overflow-x: auto; scrollbar-width: none; gap: 0;
   }
   .bottom-nav::-webkit-scrollbar { display: none; }
+
   .nav-btn {
-    flex-direction: row; gap: 6px;
-    font-size: 0.8rem; padding: 0 1.1rem;
-    height: 44px; border-top: none;
-    border-bottom: 3px solid transparent; white-space: nowrap;
     flex: 0 0 auto;
+    flex-direction: row; gap: 0;
+    height: 44px; padding: 0 1.3rem;
+    border-top: none; border-bottom: 3px solid transparent;
+    white-space: nowrap;
   }
   .nav-btn .dot { display: none; }
   .nav-btn.active { border-bottom-color: var(--c); border-top-color: transparent; }
 
+  /* on desktop show full title */
+  .nav-btn span { font-size: 0; }
+  .nav-btn span::before { content: attr(data-full); font-size: 0.82rem; text-transform: none; letter-spacing: 0; }
+
   .top-bar { top: 44px; }
-  .pages {
-    padding-top: 112px;
-    padding-bottom: 2rem;
-    max-width: 960px; margin: 0 auto;
-  }
+  .pages { padding-top: 114px; padding-bottom: 2rem; max-width: 960px; margin: 0 auto; }
   .page { padding: 20px 20px 8px; }
 
-  .sections-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 12px;
-  }
+  .sections-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
   .sec-card { margin-bottom: 0; }
-
-  .chord { font-size: 1rem; padding: 5px 12px; min-height: auto; }
+  .chord { font-size: 1rem; padding: 5px 12px; min-height: auto; min-width: auto; }
   .top-bar-title { font-size: 1.3rem; }
 }
 </style>
@@ -141,7 +123,6 @@ body {
 <body>
 
 <div class="bottom-nav" id="nav"></div>
-
 <div class="top-bar" id="topBar">
   <div class="top-bar-accent" id="topAccent"></div>
   <div class="top-bar-info">
@@ -150,13 +131,14 @@ body {
   </div>
   <span class="top-bar-count" id="topCount"></span>
 </div>
-
 <div class="pages" id="pages"></div>
 
 <script>
 const songs = [
   {
-    title: "Gratidão", artist: "Felipe Rodrigues", sub: "Ministração ao vivo", color: "#7C6EF5", cbg: "#1a1740",
+    title: "Gratidão", short: "Gratidão",
+    artist: "Felipe Rodrigues", sub: "Ministração ao vivo",
+    color: "#7C6EF5", cbg: "#1a1740",
     sections: [
       { label: "Trecho 1 — Intro", phrase: "Instrumental, sem letra", chords: ["B","G#","F#","E"] },
       { label: "Trecho 2 — Primeira parte", phrase: '"Nada novo achei"', chords: ["B","G#","F#","E"] },
@@ -167,7 +149,9 @@ const songs = [
     ]
   },
   {
-    title: "Santo Espírito", artist: "Leo Rezende", sub: "Ministração ao vivo", color: "#2DB87B", cbg: "#0a2018",
+    title: "Santo Espírito", short: "Sto. Espírito",
+    artist: "Leo Rezende", sub: "Ministração ao vivo",
+    color: "#2DB87B", cbg: "#0a2018",
     sections: [
       { label: "Trecho 1 — Intro", phrase: "Instrumental, sem letra", chords: ["A","D"] },
       { label: "Trecho 2 — Primeira parte (verso 1)", phrase: '"Não há nada igual"', chords: ["A","D"] },
@@ -178,7 +162,9 @@ const songs = [
     ]
   },
   {
-    title: "Tudo é Perda", artist: "Felipe Rodrigues", sub: "Ao vivo", color: "#E96058", cbg: "#2a0f0d",
+    title: "Tudo é Perda", short: "Tudo é Perda",
+    artist: "Felipe Rodrigues", sub: "Ao vivo",
+    color: "#E96058", cbg: "#2a0f0d",
     sections: [
       { label: "Trecho 1 — Intro", phrase: "Instrumental, sem letra", chords: ["A#","Gm","F","D#"] },
       { label: "Trecho 2 — Primeira parte", phrase: '"Tudo é perda se não tenho a Ti"', chords: ["A#","Gm","F","D#"] },
@@ -189,7 +175,9 @@ const songs = [
     ]
   },
   {
-    title: "Oceanos / Rendido Estou", artist: "Sara Vivian", sub: "Ministração ao vivo", color: "#F0A500", cbg: "#251a00",
+    title: "Oceanos / Rendido Estou", short: "Oceanos",
+    artist: "Sara Vivian", sub: "Ministração ao vivo",
+    color: "#F0A500", cbg: "#251a00",
     sections: [
       { label: "Trecho 1 — Intro", phrase: "Instrumental, sem letra", chords: ["Am"] },
       { label: "Trecho 2 — Primeira parte (verso)", phrase: '"Guia-me pra que em tudo em Ti confie"', chords: ["Am","F","C","G"] },
@@ -202,7 +190,9 @@ const songs = [
     ]
   },
   {
-    title: "Meu Alvo", artist: "Kleber Lucas", sub: "", color: "#3A8FDD", cbg: "#081828",
+    title: "Meu Alvo", short: "Meu Alvo",
+    artist: "Kleber Lucas", sub: "",
+    color: "#3A8FDD", cbg: "#081828",
     sections: [
       { label: "Trecho 1 — Intro", phrase: "Instrumental, sem letra", chords: ["Bb","Eb","Gm","Eb"] },
       { label: "Trecho 2 — Primeira parte (verso 1)", phrase: '"Estou subindo pra um lugar mais alto"', chords: ["Bb","Gm","Bb","Gm","Eb","Ebm","Bb","F","F4","F","Gm","F","Eb"] },
@@ -214,50 +204,34 @@ const songs = [
   }
 ];
 
-const nav   = document.getElementById('nav');
-const pages = document.getElementById('pages');
+const nav       = document.getElementById('nav');
+const pages     = document.getElementById('pages');
 const topAccent = document.getElementById('topAccent');
 const topTitle  = document.getElementById('topTitle');
 const topArtist = document.getElementById('topArtist');
 const topCount  = document.getElementById('topCount');
-
 let current = 0;
 
-function shortTitle(t) {
-  const map = {
-    "Gratidão": "Gratidão",
-    "Santo Espírito": "Sto. Espírito",
-    "Tudo é Perda": "Tudo é Perda",
-    "Oceanos / Rendido Estou": "Oceanos",
-    "Meu Alvo": "Meu Alvo"
-  };
-  return map[t] || t;
-}
-
 songs.forEach((song, i) => {
-  // nav button
   const btn = document.createElement('button');
   btn.className = 'nav-btn' + (i === 0 ? ' active' : '');
   btn.style.setProperty('--c', song.color);
-  btn.innerHTML = `<div class="dot"></div><span>${shortTitle(song.title)}</span>`;
+  btn.innerHTML = `<div class="dot"></div><span data-short="${song.short}" data-full="${song.title}"></span>`;
   btn.onclick = () => switchTo(i);
   nav.appendChild(btn);
 
-  // page
   const page = document.createElement('div');
   page.className = 'page' + (i === 0 ? ' active' : '');
   page.style.setProperty('--c', song.color);
 
-  const cardsHtml = song.sections.map(sec => `
+  const cards = song.sections.map(sec => `
     <div class="sec-card">
       <div class="sec-label">${sec.label}</div>
       <div class="sec-phrase">${sec.phrase}</div>
       <div class="chord-row">${sec.chords.map(c => `<span class="chord">${c}</span>`).join('')}</div>
-    </div>
-  `).join('');
+    </div>`).join('');
 
-  // desktop wraps in grid, mobile is just stacked
-  page.innerHTML = `<div class="sections-grid">${cardsHtml}</div>`;
+  page.innerHTML = `<div class="sections-grid">${cards}</div>`;
   pages.appendChild(page);
 });
 
@@ -279,7 +253,6 @@ function switchTo(idx) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// swipe support
 let tsX = 0, tsY = 0;
 document.addEventListener('touchstart', e => { tsX = e.touches[0].clientX; tsY = e.touches[0].clientY; }, { passive: true });
 document.addEventListener('touchend', e => {
